@@ -3,6 +3,7 @@ package io.studi.backend.auth.controllers;
 import io.studi.backend.auth.dtos.Requests.LoginRequest;
 import io.studi.backend.auth.dtos.Requests.SignUpRequest;
 import io.studi.backend.auth.services.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -47,6 +48,16 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-        return authService.loginUser(loginRequest , auth , response);
+        return authService.loginUser(loginRequest, auth, response);
+    }
+
+    @PostMapping("/logOut")
+    public ResponseEntity<?> logOut(HttpServletRequest request, HttpServletResponse response) {
+        return authService.logOutUser(request, response);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refreshUser(HttpServletRequest request, HttpServletResponse response){
+        return authService.refreshUser(request , response);
     }
 }
