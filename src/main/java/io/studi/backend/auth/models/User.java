@@ -1,5 +1,6 @@
 package io.studi.backend.auth.models;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -15,18 +16,25 @@ public class User {
 
     @Id
     private String id;
+
+    @NotNull
     private String name;
+
+    @NotNull
     private String email;
 
+    @NotNull
     private String password;
+
+    @NotNull
     private String username;
 
     @Field("profileImage")
-    private String profileImageUrl;
+    private String profileImageUrl = "";
 
-    private String refreshToken;
-    private String bio;
-    private boolean verified;
+    private String refreshToken = "";
+    private String bio = "";
+    private boolean verified = false;
 
     @CreatedDate
     private LocalDateTime createdAt;

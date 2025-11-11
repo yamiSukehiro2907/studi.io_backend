@@ -1,10 +1,15 @@
 package io.studi.backend.auth.controllers;
 
-import io.studi.backend.auth.dtos.SignUpRequest;
+import io.studi.backend.auth.dtos.Requests.LoginRequest;
+import io.studi.backend.auth.dtos.Requests.SignUpRequest;
 import io.studi.backend.auth.services.AuthService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -16,8 +21,11 @@ public class AuthController {
 
     public final AuthService authService;
 
-    public AuthController(AuthService _authService) {
+    private final AuthenticationManager authenticationManager;
+
+    public AuthController(AuthService _authService, AuthenticationManager _authenticationManager) {
         this.authService = _authService;
+        this.authenticationManager = _authenticationManager;
     }
 
     @PostMapping("/register")
@@ -34,5 +42,11 @@ public class AuthController {
         }
 
         return authService.createUser(signUpRequest);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+        return authService.loginUser(loginRequest , auth , response);
     }
 }

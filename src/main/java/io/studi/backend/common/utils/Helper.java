@@ -1,6 +1,6 @@
 package io.studi.backend.common.utils;
 
-import io.studi.backend.auth.dtos.UserDto;
+import io.studi.backend.auth.dtos.Responses.UserDto;
 import io.studi.backend.auth.models.User;
 
 public class Helper {

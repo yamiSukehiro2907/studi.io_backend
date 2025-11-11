@@ -11,5 +11,4 @@ public interface AuthRepository extends MongoRepository<User, String>, CustomAut
 
     Optional<User> findByEmail(String email);
 
-
 }
