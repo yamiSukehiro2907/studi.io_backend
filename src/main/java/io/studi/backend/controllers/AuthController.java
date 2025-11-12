@@ -1,8 +1,8 @@
 package io.studi.backend.controllers;
 
-import io.studi.backend.dtos.Requests.LoginRequest;
-import io.studi.backend.dtos.Requests.SignUpRequest;
-import io.studi.backend.services.AuthService;
+import io.studi.backend.dtos.Requests.authentication.LoginRequest;
+import io.studi.backend.dtos.Requests.authentication.SignUpRequest;
+import io.studi.backend.services.authentication.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -47,7 +47,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
-        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getIdentifier(), loginRequest.getPassword()));
         return authService.loginUser(loginRequest, auth, response);
     }
 

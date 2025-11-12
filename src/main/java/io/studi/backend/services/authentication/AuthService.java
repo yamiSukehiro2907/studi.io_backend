@@ -1,7 +1,7 @@
-package io.studi.backend.services;
+package io.studi.backend.services.authentication;
 
-import io.studi.backend.dtos.Requests.LoginRequest;
-import io.studi.backend.dtos.Requests.SignUpRequest;
+import io.studi.backend.dtos.Requests.authentication.LoginRequest;
+import io.studi.backend.dtos.Requests.authentication.SignUpRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;

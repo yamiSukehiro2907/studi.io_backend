@@ -47,4 +47,5 @@ public class User {
 
     private boolean deleted = false;
     private LocalDateTime deletedAt;
+
 }

@@ -1,4 +1,4 @@
-package io.studi.backend.utils;
+package io.studi.backend.utils.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -124,7 +124,7 @@ public class JwtUtil {
         return extractClaimRefreshToken(refreshToken, claims -> claims.get("type", String.class));
     }
 
-    public boolean validateAccessToken(String token, CustomUserDetails userDetails) {
+    public boolean isValidAccessToken(String token, CustomUserDetails userDetails) {
         final String username = getUsername(token);
         final String email = getEmail(token);
         return username.equals(userDetails.getUsername()) &&
@@ -133,7 +133,7 @@ public class JwtUtil {
                 !isAccessTokenExpired(token);
     }
 
-    public boolean validateRefreshToken(String token) {
+    public boolean isValidRefreshToken(String token) {
         return !isRefreshTokenExpired(token) &&
                 getRefreshTokenType(token).equals("refresh");
     }

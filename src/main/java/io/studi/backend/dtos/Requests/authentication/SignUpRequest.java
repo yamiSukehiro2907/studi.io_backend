@@ -1,4 +1,4 @@
-package io.studi.backend.dtos.Requests;
+package io.studi.backend.dtos.Requests.authentication;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

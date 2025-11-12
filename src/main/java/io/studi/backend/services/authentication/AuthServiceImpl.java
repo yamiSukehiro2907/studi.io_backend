@@ -1,15 +1,14 @@
-package io.studi.backend.services;
+package io.studi.backend.services.authentication;
 
-import io.studi.backend.dtos.Requests.LoginRequest;
-import io.studi.backend.dtos.Requests.SignUpRequest;
-import io.studi.backend.dtos.Responses.LoginResponse;
-import io.studi.backend.dtos.Responses.UserDto;
-import io.studi.backend.models.User;
-import io.studi.backend.repositories.AuthRepository;
-import io.studi.backend.security.CustomUserDetails;
 import io.studi.backend.constants.Helper;
-import io.studi.backend.utils.JwtUtil;
 import io.studi.backend.constants.LoggerHelper;
+import io.studi.backend.dtos.Requests.authentication.LoginRequest;
+import io.studi.backend.dtos.Requests.authentication.SignUpRequest;
+import io.studi.backend.dtos.Responses.authentication.LoginResponse;
+import io.studi.backend.models.User;
+import io.studi.backend.repositories.authentication.AuthRepository;
+import io.studi.backend.security.CustomUserDetails;
+import io.studi.backend.utils.jwt.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -67,10 +66,9 @@ public class AuthServiceImpl implements AuthService {
             user.setName(signUpRequest.getName());
             user.setUsername(username);
 
-            User createdUser = authRepository.createUser(user);
+            authRepository.createUser(user);
 
-            UserDto userDto = Helper.getUserDto(createdUser);
-            return new ResponseEntity<>(userDto, HttpStatus.CREATED);
+            return new ResponseEntity<>(Map.of("message", "User created successfully"), HttpStatus.CREATED);
         } catch (Exception e) {
             LoggerHelper.error(this, "Error while creating user: " + e.getMessage(), e);
             return new ResponseEntity<>(Map.of(
@@ -109,9 +107,11 @@ public class AuthServiceImpl implements AuthService {
             authRepository.save(user);
 
             LoginResponse loginResponse = new LoginResponse();
+
             loginResponse.setUserId(user.getId());
             loginResponse.setUsername(user.getUsername());
             loginResponse.setEmail(user.getEmail());
+
             return new ResponseEntity<>(loginResponse, HttpStatus.OK);
         } catch (Exception e) {
             LoggerHelper.error(this, "Error while creating user: " + e.getMessage(), e);
@@ -192,7 +192,7 @@ public class AuthServiceImpl implements AuthService {
                 return new ResponseEntity<>(Map.of("message", "Token not provided"), HttpStatus.BAD_REQUEST);
             }
 
-            if (!jwtUtil.validateRefreshToken(refreshToken)) {
+            if (!jwtUtil.isValidRefreshToken(refreshToken)) {
                 return new ResponseEntity<>(Map.of("message", "Invalid Token"), HttpStatus.CONFLICT);
             }
 

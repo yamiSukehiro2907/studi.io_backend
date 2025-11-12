@@ -1,9 +1,9 @@
-package io.studi.backend.utils;
+package io.studi.backend.utils.jwt;
 
-import io.studi.backend.security.CustomUserDetails;
-import io.studi.backend.security.CustomUserDetailsService;
 import io.studi.backend.constants.Helper;
 import io.studi.backend.constants.LoggerHelper;
+import io.studi.backend.security.CustomUserDetails;
+import io.studi.backend.security.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -45,7 +45,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 String userId = jwtUtil.getIdAccessToken(accessToken);
                 CustomUserDetails userDetails = userDetailsService.loadUserById(userId);
 
-                if (jwtUtil.validateAccessToken(accessToken, userDetails)) {
+                if (jwtUtil.isValidAccessToken(accessToken, userDetails)) {
 
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 

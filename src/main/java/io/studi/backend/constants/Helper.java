@@ -1,6 +1,6 @@
 package io.studi.backend.constants;
 
-import io.studi.backend.dtos.Responses.UserDto;
+import io.studi.backend.dtos.others.UserDto;
 import io.studi.backend.models.User;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

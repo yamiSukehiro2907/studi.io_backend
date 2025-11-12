@@ -1,4 +1,4 @@
-package io.studi.backend.repositories;
+package io.studi.backend.repositories.authentication;
 
 import io.studi.backend.models.User;
 import org.springframework.data.mongodb.repository.MongoRepository;

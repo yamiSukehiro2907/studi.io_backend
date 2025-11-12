@@ -1,12 +1,14 @@
 package io.studi.backend.security;
 
 import io.studi.backend.constants.LoggerHelper;
+import io.studi.backend.constants.Validator;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -25,11 +27,14 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         try {
-            String email = authentication.getName();
+            String identifier = authentication.getName();
             String password = authentication.getCredentials().toString();
-
-            var userDetails = userDetailsService.loadUserByUsername(email);
-
+            UserDetails userDetails;
+            if (Validator.isEmail(identifier)) {
+                userDetails = userDetailsService.loadUserByEmail(identifier);
+            } else {
+                userDetails = userDetailsService.loadUserByUsername(identifier);
+            }
             if (!passwordEncoder.matches(password, userDetails.getPassword())) {
                 throw new BadCredentialsException("Invalid email or Password");
             }
