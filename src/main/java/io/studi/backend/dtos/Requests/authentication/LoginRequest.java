@@ -1,13 +1,14 @@
 package io.studi.backend.dtos.Requests.authentication;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import jakarta.validation.constraints.Size;
 
-@Data
-public class LoginRequest {
-    @NotBlank(message = "Email or Username is required")
-    private String identifier;
+public record LoginRequest(
+        @NotBlank(message = "Email or Username is required")
+        String identifier,
 
-    @NotBlank(message = "Password is required")
-    private String password;
+        @NotBlank(message = "Password is required")
+        @Size(min = 6, message = "Password must be at least 6 characters long")
+        String password
+) {
 }

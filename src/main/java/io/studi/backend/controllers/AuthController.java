@@ -2,62 +2,61 @@ package io.studi.backend.controllers;
 
 import io.studi.backend.dtos.Requests.authentication.LoginRequest;
 import io.studi.backend.dtos.Requests.authentication.SignUpRequest;
+import io.studi.backend.dtos.common.ApiResponse;
 import io.studi.backend.services.authentication.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "*")
 public class AuthController {
 
-    public final AuthService authService;
-
+    private final AuthService authService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthController(AuthService _authService, AuthenticationManager _authenticationManager) {
-        this.authService = _authService;
-        this.authenticationManager = _authenticationManager;
-    }
-
     @PostMapping("/register")
-    public ResponseEntity<?> createUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+    public ResponseEntity<ApiResponse<?>> createUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+        SignUpRequest cleanedRequest = new SignUpRequest(
+                signUpRequest.name().trim(),
+                signUpRequest.email().trim(),
+                signUpRequest.password().trim()
+        );
 
-        ///  trimming the passed values
-        signUpRequest.setEmail(signUpRequest.getEmail().trim());
-        signUpRequest.setPassword(signUpRequest.getPassword().trim());
-        signUpRequest.setName(signUpRequest.getName().trim());
-
-        ///  checking for password length to make sure that it is 6 characters long
-        if (signUpRequest.getPassword().length() < 6) {
-            return new ResponseEntity<>(Map.of("message", "Password should be at least 6 characters long"), HttpStatus.BAD_REQUEST);
+        if (cleanedRequest.password().length() < 6) {
+            return ResponseEntity.badRequest().body(ApiResponse.error("Password should be at least 6 characters long"));
         }
-
-        return authService.createUser(signUpRequest);
+        return authService.createUser(cleanedRequest);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
-        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getIdentifier(), loginRequest.getPassword()));
+    public ResponseEntity<ApiResponse<?>> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+        Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.identifier(),
+                        loginRequest.password()
+                )
+        );
         return authService.loginUser(loginRequest, auth, response);
     }
 
-    @PostMapping("/logOut")
-    public ResponseEntity<?> logOut(HttpServletRequest request, HttpServletResponse response) {
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse<?>> logOut(HttpServletRequest request, HttpServletResponse response) {
         return authService.logOutUser(request, response);
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<?> refreshUser(HttpServletRequest request, HttpServletResponse response){
-        return authService.refreshUser(request , response);
+    public ResponseEntity<ApiResponse<?>> refreshUser(HttpServletRequest request, HttpServletResponse response) {
+        return authService.refreshUser(request, response);
     }
 }

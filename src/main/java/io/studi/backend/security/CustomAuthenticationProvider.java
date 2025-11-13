@@ -1,7 +1,8 @@
 package io.studi.backend.security;
 
-import io.studi.backend.helpers.LoggerHelper;
 import io.studi.backend.helpers.Validator;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -12,38 +13,40 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
+@RequiredArgsConstructor
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     private final CustomUserDetailsService userDetailsService;
-
     private final PasswordEncoder passwordEncoder;
-
-    public CustomAuthenticationProvider(CustomUserDetailsService _userDetailsService, PasswordEncoder _passwordEncoder) {
-        this.userDetailsService = _userDetailsService;
-        this.passwordEncoder = _passwordEncoder;
-    }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         try {
             String identifier = authentication.getName();
             String password = authentication.getCredentials().toString();
-            UserDetails userDetails;
-            if (Validator.isEmail(identifier)) {
-                userDetails = userDetailsService.loadUserByEmail(identifier);
-            } else {
-                userDetails = userDetailsService.loadUserByUsername(identifier);
-            }
+
+            log.info("Attempting authentication for identifier: {}", identifier);
+
+            UserDetails userDetails = Validator.isEmail(identifier)
+                    ? userDetailsService.loadUserByEmail(identifier)
+                    : userDetailsService.loadUserByUsername(identifier);
+
             if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-                throw new BadCredentialsException("Invalid email or Password");
+                log.warn("Invalid credentials for user: {}", identifier);
+                throw new BadCredentialsException("Invalid email or password");
             }
-            return new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities()
-            );
+
+            log.info("Authentication successful for user: {}", identifier);
+
+            return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+        } catch (BadCredentialsException e) {
+            throw e;
         } catch (Exception e) {
-            LoggerHelper.error(this, "Error while creating user: " + e.getMessage(), e);
-            throw new InternalAuthenticationServiceException("Internal Server Error!");
+            log.error("Authentication error for user {}: {}", authentication.getName(), e.getMessage(), e);
+            throw new InternalAuthenticationServiceException("Internal server error during authentication", e);
         }
     }
 

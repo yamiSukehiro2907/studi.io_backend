@@ -1,13 +1,14 @@
 package io.studi.backend.utils.jwt;
 
 import io.studi.backend.helpers.AuthHelper;
-import io.studi.backend.helpers.LoggerHelper;
 import io.studi.backend.security.CustomUserDetails;
 import io.studi.backend.security.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -16,17 +17,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
-
     private final CustomUserDetailsService userDetailsService;
-
-    public JwtFilter(JwtUtil _jwtUtil, CustomUserDetailsService _userDetailsService) {
-        this.jwtUtil = _jwtUtil;
-        this.userDetailsService = _userDetailsService;
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -46,16 +43,20 @@ public class JwtFilter extends OncePerRequestFilter {
                 CustomUserDetails userDetails = userDetailsService.loadUserById(userId);
 
                 if (jwtUtil.isValidAccessToken(accessToken, userDetails)) {
-
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
                     SecurityContextHolder.getContext().setAuthentication(authToken);
+
+                    log.debug("JWT validated successfully for userId: {}", userId);
+                } else {
+                    log.warn("Invalid or expired JWT token for userId: {}", userId);
                 }
+
             } catch (Exception e) {
-                LoggerHelper.error(this, "JWT validation failed: " + e.getMessage(), e);
+                log.error("JWT validation failed for request [{}]: {}", request.getRequestURI(), e.getMessage(), e);
             }
+        } else if (accessToken == null) {
+            log.trace("No JWT token found in request [{}]", request.getRequestURI());
         }
 
         filterChain.doFilter(request, response);

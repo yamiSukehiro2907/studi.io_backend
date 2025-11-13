@@ -2,18 +2,18 @@ package io.studi.backend.dtos.Requests.authentication;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import jakarta.validation.constraints.Size;
 
-@Data
-public class SignUpRequest {
+public record SignUpRequest(
+        @NotBlank(message = "Name is required")
+        String name,
 
-    @NotBlank(message = "Name is required")
-    private String name;
+        @Email(message = "Invalid Email format")
+        @NotBlank(message = "Email is required")
+        String email,
 
-    @Email(message = "Invalid Email format")
-    @NotBlank
-    private String email;
-
-    @NotBlank(message = "Password is required")
-    private String password;
+        @NotBlank(message = "Password is required")
+        @Size(min = 6, message = "Password must be at least 6 characters long")
+        String password
+) {
 }
