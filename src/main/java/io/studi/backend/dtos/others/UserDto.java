@@ -8,7 +8,6 @@ public record UserDto(
         String email,
         String username,
         String profileImage,
-        String refreshToken,
         String bio,
         boolean verified,
         LocalDateTime createdAt,

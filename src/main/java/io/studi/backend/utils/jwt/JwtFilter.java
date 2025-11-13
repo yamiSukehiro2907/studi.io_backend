@@ -1,7 +1,7 @@
 package io.studi.backend.utils.jwt;
 
-import io.studi.backend.constants.Helper;
-import io.studi.backend.constants.LoggerHelper;
+import io.studi.backend.helpers.AuthHelper;
+import io.studi.backend.helpers.LoggerHelper;
 import io.studi.backend.security.CustomUserDetails;
 import io.studi.backend.security.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
@@ -38,7 +38,7 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        String accessToken = Helper.getAccessTokenFromHttpRequest(request);
+        String accessToken = AuthHelper.getAccessTokenFromHttpRequest(request);
 
         if (accessToken != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             try {

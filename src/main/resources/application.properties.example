@@ -1,1 +1,39 @@
 spring.application.name=studi-backend
+app.name=studi-backend
+port=8081
+app.version=1.0.0
+app.description="Stud.io java backend service"
+app.maintainer.name="Vimal Kumar Yadav"
+app.maintainer.email="vimalyadavkr001@gmail.com"
+
+
+spring.data.mongodb.uri=#YOUR_CONNECTION_STRING
+spring.data.mongodb.database=#YOUR_DATABASE_NAME
+
+
+## allow mongodb indexing
+spring.data.mongodb.auto-index-creation=true
+
+
+logging.pattern.console=%clr(%d{HH:mm:ss}){faint} %clr(%5p) %clr(%-40.40logger{39}){cyan} : %m%n
+logging.level.root=INFO
+
+
+#jwt
+auth.ACCESS_TOKEN_SECRET=#YOUR_ACCESS_TOKEN_SECRET
+auth.REFRESH_TOKEN_SECRET=#YOUR_REFRESH_TOKEN_SECRET
+auth.ACCESS_TOKEN_EXPIRATION=#YOUR_ACCESS_TOKEN_EXPIRATION
+auth.REFRESH_TOKEN_EXPIRATION=#YOUR_REFRESH_TOKEN_EXPIRATION
+
+
+# do not allow spring security to create sessions
+#cookie
+server.servlet.session.tracking-modes=cookie
+server.servlet.session.timeout=0
+server.servlet.session.persistent=false
+
+
+#cloudinary
+cloudinary.cloud.name=#YOUR_CLOUD_NAME
+cloudinary.cloud.apiKey=#YOUR_CLOUD_APIKEY
+cloudinary.cloud.apiSecret=#YOUR_CLOUD_APISECRET

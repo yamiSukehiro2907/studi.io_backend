@@ -1,7 +1,7 @@
 package io.studi.backend.security;
 
-import io.studi.backend.constants.LoggerHelper;
-import io.studi.backend.constants.Validator;
+import io.studi.backend.helpers.LoggerHelper;
+import io.studi.backend.helpers.Validator;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;

@@ -1,4 +1,4 @@
-package io.studi.backend.constants;
+package io.studi.backend.helpers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package io.studi.backend.constants;
+package io.studi.backend.helpers;
 
 import java.util.regex.Pattern;
 
