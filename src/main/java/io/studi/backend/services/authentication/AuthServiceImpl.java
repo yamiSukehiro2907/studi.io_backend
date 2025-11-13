@@ -59,9 +59,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity<ApiResponse<?>> loginUser(LoginRequest loginRequest,
-                                                    Authentication authentication,
-                                                    HttpServletResponse response) {
+    public ResponseEntity<ApiResponse<?>> loginUser(Authentication authentication, HttpServletResponse response) {
         try {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             User user = userDetails.getUser();

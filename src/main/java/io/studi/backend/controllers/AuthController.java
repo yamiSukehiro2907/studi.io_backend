@@ -47,7 +47,7 @@ public class AuthController {
                         loginRequest.password()
                 )
         );
-        return authService.loginUser(loginRequest, auth, response);
+        return authService.loginUser(auth, response);
     }
 
     @PostMapping("/logout")

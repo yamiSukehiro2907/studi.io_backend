@@ -1,13 +1,13 @@
-package io.studi.backend.dtos.Requests.authentication;
+package io.studi.backend.dtos.Requests.user;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public record LoginRequest(
-        @NotBlank(message = "Email or Username is required")
-        @NotNull(message = "Identifier cannot be null")
-        String identifier,
+public record NewPasswordRequest(
+        @NotBlank(message = "Email is required")
+        @NotNull(message = "Email cannot be null")
+        String email,
 
         @NotBlank(message = "Password is required")
         @NotNull(message = "Password cannot be null")

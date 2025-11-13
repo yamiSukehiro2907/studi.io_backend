@@ -9,4 +9,10 @@ import org.springframework.web.multipart.MultipartFile;
 public interface UserService {
 
     ResponseEntity<ApiResponse<UserDto>> updateUser(UpdateRequest updateRequest, MultipartFile file);
+
+    ResponseEntity<ApiResponse<UserDto>> getProfile();
+
+    ResponseEntity<ApiResponse<?>> changePassword(String password);
+
+    ResponseEntity<ApiResponse<?>> changePassword2(String oldPassword, String newPassword);
 }

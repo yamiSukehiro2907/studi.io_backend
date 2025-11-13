@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +26,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final CloudinaryService cloudinaryService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public ResponseEntity<ApiResponse<UserDto>> updateUser(UpdateRequest updateRequest, MultipartFile file) {
@@ -96,5 +98,37 @@ public class UserServiceImpl implements UserService {
             log.error("Unexpected error while updating user: {}", e.getMessage(), e);
             return ResponseEntity.internalServerError().body(ApiResponse.error("Internal server error"));
         }
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<UserDto>> getProfile() {
+        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok(ApiResponse.success("User details!", UserHelper.getUserDto(userDetails.getUser())));
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<?>> changePassword(String password) {
+        CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = customUserDetails.getUser();
+        String hashedPassword = passwordEncoder.encode(password);
+        user.setPassword(hashedPassword);
+        userRepository.save(user);
+        return ResponseEntity.ok(ApiResponse.success("Password changed successfully!"));
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<?>> changePassword2(String oldPassword, String newPassword) {
+        if (oldPassword.equals(newPassword)) {
+            return new ResponseEntity<>(ApiResponse.error("New password should be different from old Password"), HttpStatus.CONFLICT);
+        }
+        CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = customUserDetails.getUser();
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            return ResponseEntity.badRequest().body(ApiResponse.error("Old Password does not matched!"));
+        }
+        String hashedPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(hashedPassword);
+        userRepository.save(user);
+        return ResponseEntity.ok(ApiResponse.success("Password changed successfully!"));
     }
 }

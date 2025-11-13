@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 public interface AuthService {
     ResponseEntity<ApiResponse<?>> createUser(SignUpRequest signUpRequest);
 
-    ResponseEntity<ApiResponse<?>> loginUser(LoginRequest loginRequest, Authentication authentication, HttpServletResponse response);
+    ResponseEntity<ApiResponse<?>> loginUser(Authentication authentication, HttpServletResponse response);
 
     ResponseEntity<ApiResponse<?>> logOutUser(HttpServletRequest request, HttpServletResponse response);
 
