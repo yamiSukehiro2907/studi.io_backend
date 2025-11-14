@@ -1,7 +1,6 @@
-package io.studi.backend.repositories.userDetails;
+package io.studi.backend.repositories.user;
 
 import io.studi.backend.models.User;
-import org.springframework.stereotype.Repository;
 
 public interface UserRepository {
 

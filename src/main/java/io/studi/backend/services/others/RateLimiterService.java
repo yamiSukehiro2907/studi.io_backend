@@ -1,4 +1,4 @@
-package io.studi.backend.services.ratelimit;
+package io.studi.backend.services.others;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;

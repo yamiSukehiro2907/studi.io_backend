@@ -1,21 +1,17 @@
-package io.studi.backend.repositories.userDetails;
+package io.studi.backend.repositories.user;
 
 import io.studi.backend.models.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
 
     private final MongoTemplate mongoTemplate;
-
-    @Autowired
-    public UserRepositoryImpl(MongoTemplate _mongoTemplate) {
-        this.mongoTemplate = _mongoTemplate;
-    }
 
     @Override
     public void createUser(User user) {

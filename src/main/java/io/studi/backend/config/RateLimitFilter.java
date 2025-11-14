@@ -2,7 +2,7 @@ package io.studi.backend.config;
 
 import io.github.bucket4j.Bucket;
 import io.studi.backend.security.CustomUserDetails;
-import io.studi.backend.services.ratelimit.RateLimiterService;
+import io.studi.backend.services.others.RateLimiterService;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;

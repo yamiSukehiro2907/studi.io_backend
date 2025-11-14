@@ -1,13 +1,13 @@
-package io.studi.backend.services.userDetails;
+package io.studi.backend.services.users;
 
 import io.studi.backend.dtos.Requests.user.UpdateRequest;
 import io.studi.backend.dtos.common.ApiResponse;
 import io.studi.backend.dtos.others.UserDto;
 import io.studi.backend.helpers.UserHelper;
 import io.studi.backend.models.User;
-import io.studi.backend.repositories.userDetails.UserRepository;
+import io.studi.backend.repositories.user.UserRepository;
 import io.studi.backend.security.CustomUserDetails;
-import io.studi.backend.services.cloudinary.CloudinaryService;
+import io.studi.backend.services.others.CloudinaryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

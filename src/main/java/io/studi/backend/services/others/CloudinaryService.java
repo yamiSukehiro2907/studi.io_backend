@@ -1,4 +1,4 @@
-package io.studi.backend.services.cloudinary;
+package io.studi.backend.services.others;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;

@@ -1,13 +1,12 @@
 package io.studi.backend.services.authentication;
 
-import io.studi.backend.dtos.Requests.authentication.LoginRequest;
 import io.studi.backend.dtos.Requests.authentication.SignUpRequest;
 import io.studi.backend.dtos.Responses.authentication.LoginResponse;
 import io.studi.backend.dtos.common.ApiResponse;
 import io.studi.backend.helpers.AuthHelper;
 import io.studi.backend.helpers.UserHelper;
 import io.studi.backend.models.User;
-import io.studi.backend.repositories.userDetails.UserRepository;
+import io.studi.backend.repositories.user.UserRepository;
 import io.studi.backend.security.CustomUserDetails;
 import io.studi.backend.utils.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;

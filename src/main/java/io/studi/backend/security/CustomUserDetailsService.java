@@ -1,7 +1,7 @@
 package io.studi.backend.security;
 
 import io.studi.backend.models.User;
-import io.studi.backend.repositories.userDetails.UserRepository;
+import io.studi.backend.repositories.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

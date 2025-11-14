@@ -15,8 +15,8 @@ public class DotenvProcessor implements EnvironmentPostProcessor {
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
 
         Dotenv dotenv = Dotenv.configure()
-                .directory("./")          // <--- IMPORTANT
-                .filename(".env")         // <--- IMPORTANT
+                .directory("./")
+                .filename(".env")
                 .ignoreIfMalformed()
                 .ignoreIfMissing()
                 .load();
@@ -27,7 +27,5 @@ public class DotenvProcessor implements EnvironmentPostProcessor {
         environment.getPropertySources().addFirst(
                 new MapPropertySource("dotenv", map)
         );
-
-        System.out.println("Loaded .env variables: " + map.keySet());
     }
 }

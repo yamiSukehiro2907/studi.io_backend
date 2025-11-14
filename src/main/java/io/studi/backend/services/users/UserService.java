@@ -1,4 +1,4 @@
-package io.studi.backend.services.userDetails;
+package io.studi.backend.services.users;
 
 import io.studi.backend.dtos.Requests.user.UpdateRequest;
 import io.studi.backend.dtos.common.ApiResponse;
