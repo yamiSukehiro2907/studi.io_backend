@@ -3,6 +3,7 @@ package io.studi.backend.config;
 import io.github.bucket4j.Bucket;
 import io.studi.backend.security.CustomUserDetails;
 import io.studi.backend.services.ratelimit.RateLimiterService;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,6 +20,12 @@ import java.io.IOException;
 public class RateLimitFilter implements Filter {
 
     private final RateLimiterService rateLimiterService;
+
+    @PostConstruct
+    public void testEnvLoad() {
+        System.out.println("ACCESS FROM SPRING = " + System.getenv("ACCESS_TOKEN_SECRET"));
+        System.out.println("ACCESS FROM SPRING = " + System.getProperty("ACCESS_TOKEN_SECRET"));
+    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {

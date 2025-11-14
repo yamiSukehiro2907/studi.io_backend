@@ -1,0 +1,67 @@
+spring:
+  application:
+    name: studi-backend
+
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+      database: ${MONGODB_DB}
+      auto-index-creation: true
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  mail:
+    host: smtp.sendgrid.net
+    port: 587
+    username: apikey
+    password: ${SENDGRID_APIKEY}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+server:
+  port: 8080
+  servlet:
+    session:
+      tracking-modes: cookie
+      timeout: 0
+      persistent: false
+
+app:
+  name: studi-backend
+  version: 1.0.0
+  description: Stud.io java backend service
+  maintainer:
+    name: Vimal Kumar Yadav
+    email: vimalyadavkr001@gmail.com
+
+auth:
+  ACCESS_TOKEN_SECRET: ${ACCESS_TOKEN_SECRET}
+  REFRESH_TOKEN_SECRET: ${REFRESH_TOKEN_SECRET}
+  ACCESS_TOKEN_EXPIRATION: ${ACCESS_TOKEN_EXPIRATION}
+  REFRESH_TOKEN_EXPIRATION: ${REFRESH_TOKEN_EXPIRATION}
+
+cloudinary:
+  cloud:
+    name: ${CLOUDINARY_CLOUDNAME}
+    apiSecret: ${CLOUDINARY_APISECRET}
+    apiKey: ${CLOUDINARY_APIKEY}
+
+mail:
+  from:
+    email: ${EMAIL}
+    name: Studi.io
+
+logging:
+  pattern:
+    console: "%clr(%d{HH:mm:ss}){faint} %clr(%5p) %clr(%-40.40logger{39}){cyan} : %m%n"
+  level:
+    root: INFO
