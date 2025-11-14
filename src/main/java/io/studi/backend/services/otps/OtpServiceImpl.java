@@ -24,7 +24,7 @@ public class OtpServiceImpl implements OtpService {
 
 
     @Override
-    public ResponseEntity<ApiResponse<?>> emailVerification(String email) {
+    public ResponseEntity<ApiResponse<?>> sendOtp(String email) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
             return new ResponseEntity<>(ApiResponse.error("User not found!"), HttpStatus.NOT_FOUND);

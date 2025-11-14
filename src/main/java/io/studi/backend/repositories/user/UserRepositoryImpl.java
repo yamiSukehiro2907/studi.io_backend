@@ -2,10 +2,13 @@ package io.studi.backend.repositories.user;
 
 import io.studi.backend.models.User;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -40,4 +43,17 @@ public class UserRepositoryImpl implements UserRepository {
     public void save(User user) {
         mongoTemplate.save(user, "users");
     }
+
+    @Override
+    public User findById(ObjectId userId) {
+        return mongoTemplate.findById(userId, User.class);
+    }
+
+    @Override
+    public List<User> findAllById(List<ObjectId> ids) {
+        if (ids == null || ids.isEmpty()) return List.of();
+        Query query = new Query(Criteria.where("_id").in(ids));
+        return mongoTemplate.find(query, User.class);
+    }
+
 }

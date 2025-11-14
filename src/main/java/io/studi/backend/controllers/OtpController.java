@@ -22,14 +22,13 @@ public class OtpController {
 
     private final OtpService otpService;
 
-    @PostMapping("/send-email-otp")
+    @PostMapping("/send-otp")
     public ResponseEntity<ApiResponse<?>> emailVerificationOtp(@Valid @RequestBody SendEmailVerificationRequest sendEmailVerificationRequest) {
         if (sendEmailVerificationRequest.email() != null) {
-            return otpService.emailVerification(sendEmailVerificationRequest.email());
+            return otpService.sendOtp(sendEmailVerificationRequest.email());
         }
         return ResponseEntity.badRequest().body(ApiResponse.error("Invalid Email"));
     }
-
 
     @PostMapping("/verify-otp")
     public ResponseEntity<ApiResponse<?>> verifyOtp(@Valid @RequestBody VerifyOtpRequest verifyOtpRequest) {
