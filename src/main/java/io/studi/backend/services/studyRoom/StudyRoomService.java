@@ -17,4 +17,6 @@ public interface StudyRoomService {
     ResponseEntity<ApiResponse<?>> joinPublicRoom(String roomId, User user);
 
     ResponseEntity<ApiResponse<?>> updateRoomInfo(String roomId, UpdateRoomRequest updateRoomRequest, MultipartFile file);
+
+    ResponseEntity<ApiResponse<?>> deleteRoom(String roomId);
 }

@@ -32,4 +32,13 @@ public class StudyRoomRepositoryImpl implements StudyRoomRepository {
     public StudyRoom findById(ObjectId roomId) {
         return mongoTemplate.findById(roomId, StudyRoom.class);
     }
+
+    @Override
+    public void deleteRoom(ObjectId roomId) {
+        mongoTemplate.remove(
+                Query.query(Criteria.where("_id").is(roomId)),
+                StudyRoom.class
+        );
+    }
+
 }

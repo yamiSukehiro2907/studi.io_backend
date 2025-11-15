@@ -58,5 +58,13 @@ public class StudyRoomController {
         }
         return studyRoomService.updateRoomInfo(roomId , updateRoomRequest , file);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<?>> deleteRoom(@PathVariable(name = "id") String roomId){
+        if (roomId == null) {
+            return ResponseEntity.badRequest().body(ApiResponse.error("RoomId is required!"));
+        }
+        return studyRoomService.deleteRoom(roomId);
+    }
 }
 

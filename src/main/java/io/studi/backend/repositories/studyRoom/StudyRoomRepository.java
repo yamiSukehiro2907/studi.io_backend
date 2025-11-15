@@ -12,4 +12,6 @@ public interface StudyRoomRepository {
     List<StudyRoom> findAll(String userId);
 
     StudyRoom findById(ObjectId roomId);
+
+    void deleteRoom(ObjectId roomId);
 }

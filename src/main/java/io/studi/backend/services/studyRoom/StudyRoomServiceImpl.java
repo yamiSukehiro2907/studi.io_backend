@@ -113,4 +113,20 @@ public class StudyRoomServiceImpl implements StudyRoomService {
         return new ResponseEntity<>(ApiResponse.error("Only Admin and Owner are allowed.."), HttpStatus.FORBIDDEN);
     }
 
+    @Override
+    public ResponseEntity<ApiResponse<?>> deleteRoom(String roomId) {
+        CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = customUserDetails.getUser();
+        StudyRoom studyRoom = studyRoomRepository.findById(new ObjectId(roomId));
+        if (studyRoom == null) {
+            return new ResponseEntity<>(ApiResponse.error("Room Not Found!"), HttpStatus.NOT_FOUND);
+        }
+        boolean isOwner = studyRoom.getOwnerId().equals(new ObjectId(user.getId()));
+        if (isOwner) {
+            studyRoomRepository.deleteRoom(new ObjectId(roomId));
+            return ResponseEntity.ok().body(ApiResponse.success("Room deleted successfully!"));
+        }
+        return new ResponseEntity<>(ApiResponse.error("Only owners are allowed to delete the room"), HttpStatus.FORBIDDEN);
+    }
+
 }
