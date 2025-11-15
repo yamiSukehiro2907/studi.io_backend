@@ -1,4 +1,4 @@
-package io.studi.backend.dtos.Requests;
+package io.studi.backend.dtos.Requests.rooms;
 
 import jakarta.validation.constraints.NotNull;
 

@@ -1,14 +1,17 @@
 package io.studi.backend.controllers;
 
-import io.studi.backend.dtos.Requests.StudyRoomRequest;
+import io.studi.backend.dtos.Requests.rooms.StudyRoomRequest;
+import io.studi.backend.dtos.Requests.rooms.UpdateRoomRequest;
 import io.studi.backend.dtos.common.ApiResponse;
 import io.studi.backend.security.CustomUserDetails;
 import io.studi.backend.services.studyRoom.StudyRoomService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/rooms")
@@ -38,4 +41,22 @@ public class StudyRoomController {
         }
         return studyRoomService.getRoom(roomId);
     }
+
+    @PostMapping("/{id}/join")
+    public ResponseEntity<ApiResponse<?>> joinPublicRoom(@PathVariable(name = "id") String roomId) {
+        CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (roomId == null) {
+            return ResponseEntity.badRequest().body(ApiResponse.error("RoomId is required!"));
+        }
+        return studyRoomService.joinPublicRoom(roomId, customUserDetails.getUser());
+    }
+
+    @PutMapping(value = "/{id}/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<?>> updateRoomInfo(@PathVariable(name = "id") String roomId, @ModelAttribute UpdateRoomRequest updateRoomRequest, @RequestParam(value = "file", required = false) MultipartFile file) {
+        if (roomId == null) {
+            return ResponseEntity.badRequest().body(ApiResponse.error("RoomId is required!"));
+        }
+        return studyRoomService.updateRoomInfo(roomId , updateRoomRequest , file);
+    }
 }
+
