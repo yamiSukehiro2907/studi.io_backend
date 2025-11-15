@@ -8,6 +8,7 @@ import io.studi.backend.models.User;
 import io.studi.backend.repositories.studyRoom.StudyRoomRepository;
 import io.studi.backend.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,6 +41,12 @@ public class StudyRoomServiceImpl implements StudyRoomService {
         List<StudyRoom> studyRooms = studyRoomRepository.findAll(user.getId());
         List<StudyRoomDto> studyRoomDtoList = studyRooms.stream().map(studyRoomHelper::populate).toList();
         return ResponseEntity.ok().body(ApiResponse.success("Rooms fetched successfully!", studyRoomDtoList));
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<?>> getRoom(String roomId) {
+        StudyRoom studyRoom = studyRoomRepository.findById(new ObjectId(roomId));
+        return ResponseEntity.ok().body(ApiResponse.success("Room fetched successfully!", studyRoomHelper.populate(studyRoom)));
     }
 
 }

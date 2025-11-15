@@ -9,4 +9,6 @@ public interface StudyRoomService {
     ResponseEntity<ApiResponse<?>> createStudyRoom(String name , String description);
 
     ResponseEntity<ApiResponse<?>> getRooms(User user);
+
+    ResponseEntity<ApiResponse<?>> getRoom(String roomId);
 }

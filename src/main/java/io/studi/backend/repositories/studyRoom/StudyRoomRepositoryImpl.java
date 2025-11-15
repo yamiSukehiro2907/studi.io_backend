@@ -27,4 +27,9 @@ public class StudyRoomRepositoryImpl implements StudyRoomRepository {
         query.addCriteria(Criteria.where("members.user").is(new ObjectId(userId)));
         return mongoTemplate.find(query, StudyRoom.class);
     }
+
+    @Override
+    public StudyRoom findById(ObjectId roomId) {
+        return mongoTemplate.findById(roomId, StudyRoom.class);
+    }
 }

@@ -1,7 +1,7 @@
 package io.studi.backend.controllers;
 
-import io.studi.backend.dtos.common.ApiResponse;
 import io.studi.backend.dtos.Requests.StudyRoomRequest;
+import io.studi.backend.dtos.common.ApiResponse;
 import io.studi.backend.security.CustomUserDetails;
 import io.studi.backend.services.studyRoom.StudyRoomService;
 import jakarta.validation.Valid;
@@ -26,8 +26,16 @@ public class StudyRoomController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<ApiResponse<?>> getAllRooms(){
+    public ResponseEntity<ApiResponse<?>> getAllRooms() {
         CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return studyRoomService.getRooms(userDetails.getUser());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<?>> getRoom(@PathVariable(name = "id") String roomId) {
+        if (roomId == null) {
+            return ResponseEntity.badRequest().body(ApiResponse.error("RoomId is required!"));
+        }
+        return studyRoomService.getRoom(roomId);
     }
 }
