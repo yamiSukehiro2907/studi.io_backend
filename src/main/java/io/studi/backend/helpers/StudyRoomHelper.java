@@ -24,36 +24,32 @@ public class StudyRoomHelper {
 
     private final UserRepository userRepository;
 
-    public StudyRoomDto populate(StudyRoom studyRoom) throws RuntimeException {
+    public StudyRoomDto populate(StudyRoom studyRoom) {
         User ownerUser = userRepository.findById(studyRoom.getOwnerId());
         if (ownerUser == null) {
             throw new RuntimeException("Owner not found!");
         }
-        Member owner = new Member(
-                new MemberDetail(
+        MemberDetail owner = new MemberDetail(
                         ownerUser.getId(),
                         ownerUser.getName(),
                         ownerUser.getEmail(),
                         ownerUser.getProfileImageUrl()
-                ),
-                true
         );
         List<ObjectId> memberIds = studyRoom.getMembers().stream().map(StudyRoomMember::getUserId).toList();
-        List<User> membersUsers = userRepository.findAllById(memberIds);
-        Map<String, User> userMap = membersUsers.stream().collect(Collectors.toMap(User::getId, u -> u));
-        List<Member> members = studyRoom.getMembers().stream()
-                .map(member -> {
-                    String id = member.getUserId().toHexString();
-                    if (id.equals(ownerUser.getId())) return null;
-                    User user = userMap.get(id);
-                    if (user == null) return null;
-                    MemberDetail detail = new MemberDetail(
-                            user.getId(),
-                            user.getName(),
-                            user.getEmail(),
-                            user.getProfileImageUrl()
+        List<User> memberUsers = userRepository.findAllById(memberIds);
+        Map<String, User> userMap = memberUsers.stream().collect(Collectors.toMap(User::getId, user -> user));
+        List<Member> members = studyRoom.getMembers().stream().map(m -> {
+                    User u = userMap.get(m.getUserId().toHexString());
+                    if (u == null) return null;
+                    return new Member(
+                            new MemberDetail(
+                                    u.getId(),
+                                    u.getName(),
+                                    u.getEmail(),
+                                    u.getProfileImageUrl()
+                            ),
+                            m.getIsAdmin()
                     );
-                    return new Member(detail, member.getIsAdmin());
                 })
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
@@ -80,11 +76,9 @@ public class StudyRoomHelper {
         studyRoom.setName(name.trim());
         studyRoom.setOwnerId(userId);
         if (description != null && !description.isEmpty()) {
-            studyRoom.setDescription(description);
+            studyRoom.setDescription(description.trim());
         }
-        StudyRoomMember studyRoomMember = new StudyRoomMember();
-        studyRoomMember.setUserId(userId);
-        studyRoomMember.setIsAdmin(true);
+        StudyRoomMember studyRoomMember = new StudyRoomMember(userId, true);
         studyRoom.setMembers(List.of(studyRoomMember));
         return studyRoom;
     }

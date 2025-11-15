@@ -10,7 +10,7 @@ public record StudyRoomDto(
         String name,
         String description,
         boolean isPrivate,
-        Member owner,
+        MemberDetail owner,
         String roomImage,
         List<Member> members,
         String whiteboardState,

@@ -2,14 +2,13 @@ package io.studi.backend.controllers;
 
 import io.studi.backend.dtos.common.ApiResponse;
 import io.studi.backend.dtos.Requests.StudyRoomRequest;
+import io.studi.backend.security.CustomUserDetails;
 import io.studi.backend.services.studyRoom.StudyRoomService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/rooms")
@@ -24,5 +23,11 @@ public class StudyRoomController {
             return studyRoomService.createStudyRoom(studyRoomRequest.name(), studyRoomRequest.description());
         }
         return ResponseEntity.badRequest().body(ApiResponse.error("Name is required"));
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<ApiResponse<?>> getAllRooms(){
+        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return studyRoomService.getRooms(userDetails.getUser());
     }
 }

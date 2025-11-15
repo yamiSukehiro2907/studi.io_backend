@@ -2,6 +2,7 @@ package io.studi.backend.models;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -47,5 +48,4 @@ public class User {
 
     private boolean deleted = false;
     private LocalDateTime deletedAt;
-
 }

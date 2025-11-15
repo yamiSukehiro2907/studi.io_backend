@@ -36,7 +36,6 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         String accessToken = AuthHelper.getAccessTokenFromHttpRequest(request);
-
         if (accessToken != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             try {
                 String userId = jwtUtil.getIdAccessToken(accessToken);
@@ -57,6 +56,12 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         } else if (accessToken == null) {
             log.trace("No JWT token found in request [{}]", request.getRequestURI());
+            response.setStatus(401);
+            response.setContentType("application/json");
+            response.getWriter().write(
+                    "{\"success\":false,\"message\":\"" + "Token not provided" + "\"}"
+            );
+            return;
         }
 
         filterChain.doFilter(request, response);
