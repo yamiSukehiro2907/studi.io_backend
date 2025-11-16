@@ -1,4 +1,4 @@
-package io.studi.backend.dtos.others;
+package io.studi.backend.dtos.users;
 
 import java.time.LocalDateTime;
 

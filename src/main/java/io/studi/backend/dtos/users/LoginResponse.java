@@ -1,4 +1,4 @@
-package io.studi.backend.dtos.Responses.authentication;
+package io.studi.backend.dtos.users;
 
 public record LoginResponse(
         String userId,

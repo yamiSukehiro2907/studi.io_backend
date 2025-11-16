@@ -1,7 +1,7 @@
 package io.studi.backend.services.authentication;
 
 import io.studi.backend.dtos.Requests.authentication.SignUpRequest;
-import io.studi.backend.dtos.Responses.authentication.LoginResponse;
+import io.studi.backend.dtos.users.LoginResponse;
 import io.studi.backend.dtos.common.ApiResponse;
 import io.studi.backend.helpers.AuthHelper;
 import io.studi.backend.helpers.UserHelper;

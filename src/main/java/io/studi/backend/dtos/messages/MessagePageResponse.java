@@ -1,4 +1,4 @@
-package io.studi.backend.dtos.Responses.messages;
+package io.studi.backend.dtos.messages;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

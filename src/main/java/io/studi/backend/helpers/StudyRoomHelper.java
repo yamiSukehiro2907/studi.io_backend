@@ -1,8 +1,8 @@
 package io.studi.backend.helpers;
 
-import io.studi.backend.dtos.others.Member;
-import io.studi.backend.dtos.others.MemberDetail;
-import io.studi.backend.dtos.others.StudyRoomDto;
+import io.studi.backend.dtos.rooms.Member;
+import io.studi.backend.dtos.rooms.MemberDetail;
+import io.studi.backend.dtos.rooms.StudyRoomDto;
 import io.studi.backend.models.StudyRoom;
 import io.studi.backend.models.StudyRoomMember;
 import io.studi.backend.models.User;

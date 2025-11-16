@@ -1,6 +1,6 @@
 package io.studi.backend.helpers;
 
-import io.studi.backend.dtos.others.UserDto;
+import io.studi.backend.dtos.users.UserDto;
 import io.studi.backend.models.User;
 
 import java.security.SecureRandom;

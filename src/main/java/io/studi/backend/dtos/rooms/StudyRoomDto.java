@@ -1,4 +1,4 @@
-package io.studi.backend.dtos.others;
+package io.studi.backend.dtos.rooms;
 
 import io.studi.backend.models.Section;
 

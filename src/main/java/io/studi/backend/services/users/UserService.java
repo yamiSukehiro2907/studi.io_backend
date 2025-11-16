@@ -2,7 +2,7 @@ package io.studi.backend.services.users;
 
 import io.studi.backend.dtos.Requests.user.UpdateRequest;
 import io.studi.backend.dtos.common.ApiResponse;
-import io.studi.backend.dtos.others.UserDto;
+import io.studi.backend.dtos.users.UserDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 

@@ -2,8 +2,8 @@ package io.studi.backend.services.studyRoom;
 
 import io.studi.backend.dtos.Requests.rooms.UpdateRoomRequest;
 import io.studi.backend.dtos.common.ApiResponse;
-import io.studi.backend.dtos.others.Member;
-import io.studi.backend.dtos.others.StudyRoomDto;
+import io.studi.backend.dtos.rooms.Member;
+import io.studi.backend.dtos.rooms.StudyRoomDto;
 import io.studi.backend.helpers.StudyRoomHelper;
 import io.studi.backend.models.StudyRoom;
 import io.studi.backend.models.StudyRoomMember;

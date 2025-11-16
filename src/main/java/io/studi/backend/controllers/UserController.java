@@ -4,7 +4,7 @@ import io.studi.backend.dtos.Requests.user.ChangePasswordRequest;
 import io.studi.backend.dtos.Requests.user.NewPasswordRequest;
 import io.studi.backend.dtos.Requests.user.UpdateRequest;
 import io.studi.backend.dtos.common.ApiResponse;
-import io.studi.backend.dtos.others.UserDto;
+import io.studi.backend.dtos.users.UserDto;
 import io.studi.backend.services.users.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;

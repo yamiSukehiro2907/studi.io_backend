@@ -2,7 +2,7 @@ package io.studi.backend.services.users;
 
 import io.studi.backend.dtos.Requests.user.UpdateRequest;
 import io.studi.backend.dtos.common.ApiResponse;
-import io.studi.backend.dtos.others.UserDto;
+import io.studi.backend.dtos.users.UserDto;
 import io.studi.backend.helpers.UserHelper;
 import io.studi.backend.models.User;
 import io.studi.backend.repositories.user.UserRepository;

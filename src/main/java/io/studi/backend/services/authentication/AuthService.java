@@ -1,8 +1,6 @@
 package io.studi.backend.services.authentication;
 
-import io.studi.backend.dtos.Requests.authentication.LoginRequest;
 import io.studi.backend.dtos.Requests.authentication.SignUpRequest;
-import io.studi.backend.dtos.Responses.authentication.LoginResponse;
 import io.studi.backend.dtos.common.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

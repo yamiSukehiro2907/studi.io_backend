@@ -1,6 +1,6 @@
 package io.studi.backend.repositories.message;
 
-import io.studi.backend.dtos.Responses.messages.MessagePageResponse;
+import io.studi.backend.dtos.messages.MessagePageResponse;
 import io.studi.backend.models.Message;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
@@ -11,8 +11,6 @@ import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -46,5 +44,10 @@ public class MessageRepositoryImpl implements MessageRepository {
         AggregationResults<MessagePageResponse> results = mongoTemplate.aggregate(aggregation, "messages", MessagePageResponse.class);
         MessagePageResponse response = results.getUniqueMappedResult();
         return response != null ? response : new MessagePageResponse();
+    }
+
+    @Override
+    public void save(Message message) {
+        mongoTemplate.save(message, "messages");
     }
 }

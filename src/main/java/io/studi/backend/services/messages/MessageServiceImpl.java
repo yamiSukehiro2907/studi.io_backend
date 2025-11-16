@@ -1,7 +1,9 @@
 package io.studi.backend.services.messages;
 
-import io.studi.backend.dtos.Responses.messages.MessagePageResponse;
 import io.studi.backend.dtos.common.ApiResponse;
+import io.studi.backend.dtos.messages.ChatMessage;
+import io.studi.backend.dtos.messages.MessagePageResponse;
+import io.studi.backend.models.Message;
 import io.studi.backend.models.StudyRoom;
 import io.studi.backend.repositories.message.MessageRepository;
 import io.studi.backend.repositories.studyRoom.StudyRoomRepository;
@@ -48,5 +50,18 @@ public class MessageServiceImpl implements MessageService {
                         )
                 )
         );
+    }
+
+    @Override
+    public Message createMessage(ChatMessage chatMessage) {
+        if (!ObjectId.isValid(chatMessage.roomId()) || !ObjectId.isValid(chatMessage.senderId())) {
+            return null;
+        }
+        Message message = new Message();
+        message.setRoom(new ObjectId(chatMessage.roomId()));
+        message.setSender(new ObjectId(chatMessage.senderId()));
+        message.setContent(chatMessage.content());
+        messageRepository.save(message);
+        return message;
     }
 }
