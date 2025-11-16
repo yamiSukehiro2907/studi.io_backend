@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -26,15 +27,17 @@ public class JwtFilter extends OncePerRequestFilter {
     private final CustomUserDetailsService userDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
-
-        if (path.startsWith("/auth/")) {
-            filterChain.doFilter(request, response);
-            return;
+        if (path.startsWith("/ws")) {
+            return true;
         }
+        return path.startsWith("/auth/");
+    }
 
+    @Override
+    protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain)
+            throws ServletException, IOException {
         String accessToken = AuthHelper.getAccessTokenFromHttpRequest(request);
         if (accessToken != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             try {
@@ -42,24 +45,26 @@ public class JwtFilter extends OncePerRequestFilter {
                 CustomUserDetails userDetails = userDetailsService.loadUserById(userId);
 
                 if (jwtUtil.isValidAccessToken(accessToken, userDetails)) {
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
 
                     log.debug("JWT validated successfully for userId: {}", userId);
-                } else {
-                    log.warn("Invalid or expired JWT token for userId: {}", userId);
                 }
 
             } catch (Exception e) {
-                log.error("JWT validation failed for request [{}]: {}", request.getRequestURI(), e.getMessage(), e);
+                log.error("JWT validation failed for request [{}]: {}", request.getRequestURI(), e.getMessage());
             }
+
         } else if (accessToken == null) {
+
             log.trace("No JWT token found in request [{}]", request.getRequestURI());
+
             response.setStatus(401);
             response.setContentType("application/json");
             response.getWriter().write(
-                    "{\"success\":false,\"message\":\"" + "Token not provided" + "\"}"
+                    "{\"success\":false,\"message\":\"Token not provided\"}"
             );
             return;
         }
