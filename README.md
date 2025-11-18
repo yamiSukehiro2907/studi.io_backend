@@ -17,11 +17,11 @@ A comprehensive Spring Boot backend for Studi.io - a collaborative study platfor
 * 📧 **Email Service** – OTP verification and email notifications via SendGrid
 * 🛡️ **Rate Limiting** – Bucket4j-based rate limiting for API endpoints (general, login, signup, user-specific)
 * 📊 **Message Pagination** – Efficient message retrieval with pagination support
+* 📝 **Collaborative Whiteboard** – Real-time drawing and note-taking
+* 🗂️ **ResourceHub** – Centralized document and link management
 
 ### 🚀 Upcoming Features
 
-* 📝 **Collaborative Whiteboard** – Real-time drawing and note-taking
-* 🗂️ **ResourceHub** – Centralized document and link management
 * 🎥 **Video Chat** – Built-in video conferencing
 * 📊 **Study Analytics** – Track study time and productivity
 * 🔔 **Push Notifications** – Browser push notifications for updates
