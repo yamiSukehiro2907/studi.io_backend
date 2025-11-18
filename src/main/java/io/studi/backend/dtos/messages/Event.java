@@ -1,8 +1,9 @@
 package io.studi.backend.dtos.messages;
 
-public record UserEvent (
-        String type,
+public record Event(
         String userId,
+        String type,
+        Object content,
         String roomId
-){
+) {
 }
